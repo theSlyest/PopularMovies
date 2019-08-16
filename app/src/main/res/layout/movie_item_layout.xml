@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/movie_image"
@@ -23,7 +23,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text="Movie Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toEndOf="@+id/movie_image"
@@ -36,7 +36,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text="Comedy, Action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toEndOf="@+id/movie_image"
@@ -49,7 +49,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="3dp"
-        android:text="TextView"
+        android:text="2017"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.681"
         app:layout_constraintStart_toEndOf="@+id/movie_title"
@@ -62,7 +62,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text="7.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toEndOf="@+id/movie_genre"

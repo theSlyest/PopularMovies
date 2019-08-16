@@ -8,6 +8,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.view.Menu;
@@ -15,12 +17,27 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private moviesAdapter mMoviesAdapter;
+    private RecyclerView movieList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //initialize an instance of the adapter class
+        mMoviesAdapter = new moviesAdapter();
+
+        //initializing the recyclerView member variable
+        movieList = findViewById(R.id.movie_list);
+
+        //create a layout manager for the recycler view
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        movieList.setLayoutManager(layoutManager);
+        movieList.setAdapter(mMoviesAdapter);
 
 
     }
