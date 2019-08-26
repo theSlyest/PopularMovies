@@ -12,11 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewHolder>  {
     private ImageView movieImage;
     private TextView movieTitle, movieGenre, movieYear, movieRating;
+    private List<Movies> movies;
 
-    public moviesAdapter(){}
+    public moviesAdapter(List<Movies> moviesList){
+        this.movies = moviesList;
+    }
 
 
 
@@ -24,21 +29,21 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
     @Override
     public movieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context =  parent.getContext();
-        View itemView = LayoutInflater.from(context)
+        View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item_layout, parent, false);
-        movieViewHolder viewHolder = new movieViewHolder(itemView);
 
-        return viewHolder;
+
+        return new movieViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull movieViewHolder holder, int position) {
-
+        holder.bind(movies.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 30;
+        return movies.size();
     }
 
 
@@ -50,11 +55,18 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
         public movieViewHolder(@NonNull View itemView) {
             super(itemView);
             //get the itemView ids here
-            //movieImage = itemView.findViewById(R.id.movie_image);
-            //movieTitle = itemView.findViewById(R.id.movie_title);
-            //movieGenre = itemView.findViewById(R.id.movie_genre);
-            //movieYear = itemView.findViewById(R.id.movie_year);
+            movieImage = itemView.findViewById(R.id.movie_image);
+            movieTitle = itemView.findViewById(R.id.movie_title);
+            movieGenre = itemView.findViewById(R.id.movie_genre);
+            movieYear = itemView.findViewById(R.id.movie_year);
 
+        }
+
+        public void bind(Movies movie){
+            movieTitle.setText(movie.getMovieTitle());
+            movieGenre.setText("");
+            movieYear.setText(movie.getMovieYear());
+            movieRating.setText("");
         }
     }
 }

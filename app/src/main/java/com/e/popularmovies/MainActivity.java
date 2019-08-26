@@ -2,23 +2,23 @@ package com.e.popularmovies;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private moviesAdapter mMoviesAdapter;
-    private RecyclerView movieList;
+    private RecyclerView movieRecyclerView;
+    private  moviesRepository moviesRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +28,34 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //initialize an instance of the adapter class
-        mMoviesAdapter = new moviesAdapter();
+
 
         //initializing the recyclerView member variable
-        movieList = findViewById(R.id.movie_list);
+        movieRecyclerView = findViewById(R.id.movie_list);
 
         //create a layout manager for the recycler view
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        movieList.setLayoutManager(layoutManager);
-        movieList.setAdapter(mMoviesAdapter);
+        movieRecyclerView.setLayoutManager(layoutManager);
+        movieRecyclerView.setAdapter(mMoviesAdapter);
 
 
+        //create an instance of the moviesRepository class to fetch the data from TMDB API
+        moviesRepository = com.e.popularmovies.moviesRepository.getInstance();
+
+        moviesRepository.getMovieS(new onGetMoviesCallback() {
+            @Override
+            public void onSuccess(List<Movies> movies) {
+                mMoviesAdapter = new moviesAdapter(movies);
+                mMoviesAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(getApplicationContext(),"Error:Check your internet connection",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
