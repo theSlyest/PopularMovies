@@ -25,8 +25,6 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
         this.context = context;
     }
 
-
-
     @NonNull
     @Override
     public movieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,13 +43,19 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
 
     @Override
     public int getItemCount() {
-         return movies.size();
+         if (movies == null)
+             return 0;
+         else
+            return movies.size();
+    }
 
+    public void changeMoviesList(List<Movies> moviesList) {
+        this.movies = moviesList;
+        notifyDataSetChanged();
     }
 
     //create inner viewHolder class
     public class movieViewHolder extends RecyclerView.ViewHolder{
-
 
 
         public movieViewHolder(@NonNull View itemView) {

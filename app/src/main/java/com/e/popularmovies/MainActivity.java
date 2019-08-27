@@ -46,26 +46,29 @@ public class MainActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         movieRecyclerView.setLayoutManager(layoutManager);
+        mMoviesAdapter = new moviesAdapter(null, this);
+        movieRecyclerView.setAdapter(mMoviesAdapter);
 
 
         tmDbApi = moviesRepository.getRetrofitInstance().create(TMDbApi.class);
 
-            Call<List<Movies>> call=tmDbApi.getMovies(1, BASE_URL);
-                call.enqueue(new Callback<List<Movies>>() {
-                    @Override
-                    public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
-                            MovieList = response.body();
-                            Log.d("Number of movies:", String.valueOf(MovieList.size()));
-                          // mMoviesAdapter.notifyDataSetChanged();
-                            mMoviesAdapter =new moviesAdapter(MovieList, MainActivity.this);
-                            movieRecyclerView.setAdapter(mMoviesAdapter);
-                    }
+        Call<List<Movies>> call = tmDbApi.getMovies(1, BASE_URL);
+        call.enqueue(new Callback<List<Movies>>() {
+            @Override
+            public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
+                    MovieList = response.body();
+                    Log.d("Number of movies:", String.valueOf(MovieList.size()));
+                  // mMoviesAdapter.notifyDataSetChanged();
+//                            mMoviesAdapter =new moviesAdapter(MovieList, MainActivity.this);
+//                            movieRecyclerView.setAdapter(mMoviesAdapter);
+                    mMoviesAdapter.changeMoviesList(MovieList);
+            }
 
-                    @Override
-                    public void onFailure(Call<List<Movies>> call, Throwable t) {
+            @Override
+            public void onFailure(Call<List<Movies>> call, Throwable t) {
 
-                    }
-                });
+            }
+        });
     }
 
     @Override
