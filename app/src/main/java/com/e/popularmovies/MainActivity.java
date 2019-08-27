@@ -1,5 +1,6 @@
 package com.e.popularmovies;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 
 
@@ -8,17 +9,27 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private moviesAdapter mMoviesAdapter;
     private RecyclerView movieRecyclerView;
     private  moviesRepository moviesRepository;
+    private TMDbApi tmDbApi;
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    private static final String API_KEY = "be44f9cb6ab3f64b9c91466c0ce1160c";
+    private static final String Language = "en-us";
+    private  List<Movies> MovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //initialize an instance of the adapter class
 
 
         //initializing the recyclerView member variable
@@ -37,25 +46,26 @@ public class MainActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         movieRecyclerView.setLayoutManager(layoutManager);
-        movieRecyclerView.setAdapter(mMoviesAdapter);
 
 
-        //create an instance of the moviesRepository class to fetch the data from TMDB API
-        moviesRepository = com.e.popularmovies.moviesRepository.getInstance();
+        tmDbApi = moviesRepository.getRetrofitInstance().create(TMDbApi.class);
 
-        moviesRepository.getMovieS(new onGetMoviesCallback() {
-            @Override
-            public void onSuccess(List<Movies> movies) {
-                mMoviesAdapter = new moviesAdapter(movies);
-                mMoviesAdapter.notifyDataSetChanged();
-            }
+            Call<List<Movies>> call=tmDbApi.getMovies(1, BASE_URL);
+                call.enqueue(new Callback<List<Movies>>() {
+                    @Override
+                    public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
+                            MovieList = response.body();
+                            Log.d("Number of movies:", String.valueOf(MovieList.size()));
+                          // mMoviesAdapter.notifyDataSetChanged();
+                            mMoviesAdapter =new moviesAdapter(MovieList, MainActivity.this);
+                            movieRecyclerView.setAdapter(mMoviesAdapter);
+                    }
 
-            @Override
-            public void onError() {
-                Toast.makeText(getApplicationContext(),"Error:Check your internet connection",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<List<Movies>> call, Throwable t) {
+
+                    }
+                });
     }
 
     @Override

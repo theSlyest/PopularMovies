@@ -18,9 +18,11 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
     private ImageView movieImage;
     private TextView movieTitle, movieGenre, movieYear, movieRating;
     private List<Movies> movies;
+    private Context context;
 
-    public moviesAdapter(List<Movies> moviesList){
+    public moviesAdapter(List<Movies> moviesList, Context context){
         this.movies = moviesList;
+        this.context = context;
     }
 
 
@@ -43,9 +45,9 @@ public class moviesAdapter extends RecyclerView.Adapter<moviesAdapter.movieViewH
 
     @Override
     public int getItemCount() {
-        return movies.size();
-    }
+         return movies.size();
 
+    }
 
     //create inner viewHolder class
     public class movieViewHolder extends RecyclerView.ViewHolder{
